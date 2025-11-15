@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+openai
+pdfplumber
+python-docx
+pandas
+numpy
+scikit-learn
+pytesseract
+more-itertools
