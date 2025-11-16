@@ -11,7 +11,7 @@
 
 ## Установка
 ```bash
-git clone <repo-url>
+git clone https://github.com/1NBuk/LegalDocAnalyzer.git
 cd LegalDocAnalyzer
 python -m venv venv
 source venv/bin/activate   # Linux/Mac
