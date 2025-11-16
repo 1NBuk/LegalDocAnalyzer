@@ -8,3 +8,4 @@ numpy
 scikit-learn
 pytesseract
 more-itertools
+python-multipart
