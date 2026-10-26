@@ -1,0 +1,13 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+.idea/
+.pytest_cache/
+*.pkl
+.env
+# загруженные юридические документы и результаты не должны попадать в git
+data/*
+results/*
+!data/.gitkeep
+!results/.gitkeep
