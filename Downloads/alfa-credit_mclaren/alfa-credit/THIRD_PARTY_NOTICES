@@ -1,0 +1,7 @@
+Backend: Python 3.12 (PSF), FastAPI (MIT), Pydantic (MIT), Uvicorn (BSD-3), HTTPX (BSD-3), pytest (MIT), SQLite (public domain).
+DS/ML: CatBoost (Apache-2.0), scikit-learn (BSD-3), pandas, NumPy, SciPy (BSD-3), joblib (BSD-3).
+Опционально: Ollama (MIT) / vLLM (Apache-2.0) и open-weights LLM (лицензию уточнить по model card, напр. Qwen3 — Apache-2.0).
+Frontend: чистый HTML/CSS/JS, без внешних библиотек, шрифтов и CDN.
+Данные: полностью синтетические (credit_ds/synth.py, backend/app/db.py). Модель обучена только на синтетике.
+Смоделированные интеграции: ЕГРЮЛ/ЕГРИП, ФНС «Прозрачный бизнес», БКИ (credit_ds/mock_integrations.py), электронная подпись и выдача средств (app/main.py).
+Каталог продуктов, ставки и пороги вымышлены и не отражают условия Альфа-Банка. Логотипы банка не используются; визуальный стиль — по мотивам кейса.

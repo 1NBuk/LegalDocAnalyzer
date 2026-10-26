@@ -1,0 +1,19 @@
+# docker compose up --build  ->  http://localhost:8000   (Swagger: /docs)
+# С локальной open-weights LLM:  docker compose --profile llm up --build  (затем: docker compose exec llm ollama pull qwen3:4b)
+services:
+  app:
+    build: ./backend
+    ports: ["8000:8000"]
+    environment:
+      DB_PATH: /data/app.db
+      LLM_BASE_URL: ${LLM_BASE_URL:-}      # пусто = правила и шаблоны, без LLM
+      LLM_MODEL: ${LLM_MODEL:-qwen3:4b}
+      LLM_API_KEY: ${LLM_API_KEY:-}        # токен провайдера, если нужен
+      DS_KEY_RATE: ${DS_KEY_RATE:-0.14}    # ключевая ставка ЦБ
+    volumes: [dbdata:/data]
+    restart: unless-stopped
+  llm:
+    image: ollama/ollama:latest
+    profiles: [llm]
+    volumes: [ollama:/root/.ollama]
+volumes: {dbdata: {}, ollama: {}}

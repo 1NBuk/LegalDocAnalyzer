@@ -1,0 +1,13 @@
+catboost==1.2.10
+fastapi==0.153.0
+httpx==0.28.1
+joblib==1.5.3
+numpy==2.4.4
+pandas==3.0.2
+pydantic==2.14.1
+pytest==9.1.1
+scikit-learn==1.8.0
+scipy==1.17.1
+uvicorn==0.54.0
+psycopg[binary]==3.2.3
+psycopg-pool==3.2.4

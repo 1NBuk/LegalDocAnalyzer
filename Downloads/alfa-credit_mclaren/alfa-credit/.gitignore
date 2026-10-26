@@ -1,0 +1,4 @@
+certs/
+backups/
+.env.prod
+.env

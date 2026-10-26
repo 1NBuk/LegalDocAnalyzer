@@ -1,0 +1,43 @@
+# Продакшн-контур: nginx (TLS) -> app -> PostgreSQL.
+#   cp .env.prod.example .env.prod  # заполнить секреты
+#   sh deploy/gen-selfsigned.sh     # или положить реальные сертификаты в deploy/certs/{fullchain,privkey}.pem
+#   docker compose -f docker-compose.prod.yml --env-file .env.prod up -d --build
+#   docker compose -f docker-compose.prod.yml exec app python -m app.manage create-user --login ... --role operator --name "..." --limit 3000000
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment: {POSTGRES_USER: alfa, POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?задайте POSTGRES_PASSWORD}", POSTGRES_DB: alfa}
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck: {test: ["CMD-SHELL", "pg_isready -U alfa"], interval: 5s, timeout: 3s, retries: 10}
+    networks: [internal]
+  app:
+    build: ./backend
+    restart: unless-stopped
+    depends_on: {db: {condition: service_healthy}}
+    environment:
+      APP_ENV: production
+      SEED_DEMO: "0"
+      DATABASE_URL: "postgresql://alfa:${POSTGRES_PASSWORD}@db:5432/alfa"
+      SIGN_SALT: "${SIGN_SALT:?задайте SIGN_SALT}"
+      DS_KEY_RATE: "${DS_KEY_RATE:-0.14}"
+      SLA_HOURS: "${SLA_HOURS:-4}"
+      LLM_BASE_URL: "${LLM_BASE_URL:-}"
+      LLM_API_KEY: "${LLM_API_KEY:-}"
+      LLM_MODEL: "${LLM_MODEL:-}"
+    user: "10001:10001"
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    deploy: {resources: {limits: {cpus: "2", memory: 2g}}}
+    networks: [internal]
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    depends_on: [app]
+    ports: ["80:80", "443:443"]
+    volumes: ["./deploy/nginx.conf:/etc/nginx/nginx.conf:ro", "./deploy/certs:/etc/nginx/certs:ro"]
+    networks: [internal, default]
+volumes: {pgdata: {}}
+networks: {internal: {internal: false}}

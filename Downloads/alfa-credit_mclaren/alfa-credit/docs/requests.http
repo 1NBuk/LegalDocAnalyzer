@@ -1,0 +1,33 @@
+### Логин
+POST http://localhost:8000/api/login
+Content-Type: application/json
+
+{"login":"client1","password":"client"}
+
+### Ассистент (подставьте токен)
+POST http://localhost:8000/api/assistant
+Authorization: Bearer <TOKEN>
+Content-Type: application/json
+
+{"text":"Купить печь для пекарни, 2,5 млн на 3 года"}
+
+### Заявка
+POST http://localhost:8000/api/applications
+Authorization: Bearer <TOKEN>
+Content-Type: application/json
+
+{"inn":"7700000001","legal_form":"OOO","sector":"retail","region_tier":"million","employees":10,"revenue":24000000,"profit_margin":0.16,"revenue_growth":0.08,"existing_debt":2400000,"active_loans":1,"collateral_value":0,"product":"working_capital","purpose":"working_capital","amount":2000000,"term":36}
+
+### Ответ клиента: accept | sign | decline | provide_info
+POST http://localhost:8000/api/applications/1/respond
+Authorization: Bearer <TOKEN>
+Content-Type: application/json
+
+{"action":"accept"}
+
+### Решение андеррайтера (токен operator)
+POST http://localhost:8000/api/operator/applications/1/decision
+Authorization: Bearer <TOKEN>
+Content-Type: application/json
+
+{"action":"approve","comment":"Одобрено"}
